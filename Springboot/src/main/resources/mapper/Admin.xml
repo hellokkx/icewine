@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springboot.mapper.AdminMapper">
+
+    <insert id="save">
+        insert into admin(name,tel,sex,pwd,age,pos,prior,ads,in_time,out_time,cause)
+        values(#{name},#{tel},#{sex},#{pwd},#{age},#{pos},#{prior},#{ads},#{in_time},#{out_time},#{cause})
+    </insert>
+
+    <update id="updateById">
+        update admin set name=#{name},tel=#{tel},sex=#{sex},
+        age=#{age},pos=#{pos},prior=#{prior},ads=#{ads}
+        where id=#{id}
+    </update>
+
+    <update id="updatePassword">
+        update admin set pwd=#{newPass}
+        where name=#{name} and pwd=#{pwd}
+    </update>
+
+    <delete id="deleteById">
+        delete from admin where id = #{id}
+    </delete>
+
+    <select id="list" resultType="com.example.springboot.entity.Admin">
+        select * from admin
+    </select>
+
+    <select id="listByCondition" resultType="com.example.springboot.entity.Admin">
+        select * from admin
+        <where>
+            <if test="name !=null and name!= ''">
+                name like concat('%',#{name},'%')
+            </if>
+            <if test="tel !=null and tel!= ''">
+                and tel like concat('%',#{tel},'%')
+            </if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="getById" resultType="com.example.springboot.entity.Admin">
+        select * from admin where id = #{id}
+    </select>
+
+    <select id="getByNameAndPassword" resultType="com.example.springboot.entity.Admin">
+        select * from admin where name = #{name} and pwd=#{pwd}
+    </select>
+
+
+</mapper>

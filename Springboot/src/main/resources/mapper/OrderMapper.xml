@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springboot.mapper.OrderMapper">
+
+<!--    <resultMap id="categoryMap" type="com.example.springboot.entity.Order">-->
+<!--        <id column="id" property="id"/>-->
+<!--        <result column="name" property="name"/>-->
+<!--        <result column="remark" property="remark"/>-->
+<!--        <result column="pid" property="pid"/>-->
+<!--        <result column="createtime" property="createtime"/>-->
+<!--        <result column="updatetime" property="updatetime"/>-->
+<!--        <collection property="children" column="id" ofType="com.example.springboot.entity.Order" select="selectByPid"/>-->
+<!--    </resultMap>-->
+
+<!--    <select id="selectByPid" resultType="com.example.springboot.entity.Order">-->
+<!--        select * from category where pid=#{pid} order by oid desc-->
+<!--    </select>-->
+
+    <select id="list" resultType="com.example.springboot.entity.Order">
+        select * from wineorder order by oid desc
+    </select>
+
+<!--    <select id="listByCondition" resultMap="categoryMap">-->
+<!--        select c1.* from category c1-->
+<!--        left join category c2-->
+<!--        on c1.id=c2.pid-->
+<!--        <where>-->
+<!--            isnull(c1.pid)-->
+<!--            <if test="name !=null and name!= ''">-->
+<!--                 and (c1.name like concat('%',#{name},'%') or c2.name like concat('%',#{name},'%'))-->
+<!--            </if>-->
+<!--        </where>-->
+<!--        group by c1.id-->
+<!--        order by id desc-->
+<!--    </select>-->
+
+
+    <select id="listByCondition" resultType="com.example.springboot.entity.Order">
+        select * from wineorder
+        <where>
+            <if test="oid !=null">
+                oid= #{oid}
+            </if>
+            <if test="uid !=null">
+                uid= #{uid}
+            </if>
+        </where>
+        order by oid desc
+    </select>
+
+    <insert id="save">
+        insert into wineorder(uid,pay,price,time,status)
+        values(#{uid},#{pay},#{price},#{time},#{status})
+    </insert>
+
+    <update id="updateById">
+        update wineorder set pay= #{pay},time=#{time},uid=#{uid},price=#{price},status=#{status}
+        where oid=#{oid}
+    </update>
+
+    <update id="confirmById">
+        update wineorder set status="已完成"
+        where oid=#{oid}
+    </update>
+
+    <delete id="deleteById">
+        delete from wineorder where oid = #{oid}
+    </delete>
+
+
+    <select id="getById" resultType="com.example.springboot.entity.Order">
+        select * from wineorder where oid = #{oid}
+    </select>
+
+
+</mapper>

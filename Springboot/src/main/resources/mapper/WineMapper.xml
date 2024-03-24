@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springboot.mapper.WineMapper">
+
+
+    <select id="list" resultType="com.example.springboot.entity.Wine">
+        select * from wine order by wid desc
+    </select>
+
+    <select id="listByCondition" resultType="com.example.springboot.entity.Wine">
+        select * from wine
+        <where>
+            <if test="winename !=null and winename!= ''">
+                winename like concat('%',#{winename},'%')
+            </if>
+        </where>
+        order by wid desc
+    </select>
+
+    <insert id="save">
+        insert into wine(winename,category,num,sold,status,cover,time,updatetime)
+        values(#{winename},#{category},#{num},#{sold},#{status},#{cover},#{time},#{updatetime})
+    </insert>
+
+    <update id="updateById">
+        update wine set winename=#{winename}, category=#{category}, num=#{num},
+        sold=#{sold}, status=#{status},cover=#{cover},time=#{time},updatetime=#{updatetime}
+        where wid=#{wid}
+    </update>
+
+
+    <delete id="deleteById">
+        delete from wine where wid = #{wid}
+    </delete>
+
+
+    <select id="getById" resultType="com.example.springboot.entity.Wine">
+        select * from wine where wid = #{wid}
+    </select>
+
+    <select id="getByNo" resultType="com.example.springboot.entity.Wine">
+        select * from wine where bookno = #{bookno}
+    </select>
+
+
+</mapper>
